@@ -6,6 +6,6 @@ set -e
 
 docker build --rm -t popoaq/docker-airflow .
 
-docker tag popoaq/docker-airflow popoaq/docker-airflow:1.9.0
+docker tag popoaq/docker-airflow popoaq/docker-airflow:celery
 
-docker push popoaq/docker-airflow:1.9.0
+docker push popoaq/docker-airflow:celery
