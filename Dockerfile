@@ -4,6 +4,9 @@
 # BUILD: docker build --rm -t puckel/docker-airflow .
 # SOURCE: https://github.com/puckel/docker-airflow
 
+# BUILD: docker build --rm -t popoaq/docker-airflow .
+# SOURCE: https://github.com/popoaq/docker-airflow
+
 FROM python:3.6-slim
 LABEL maintainer="Puckel_"
 
@@ -50,6 +53,8 @@ RUN set -ex \
         rsync \
         netcat \
         locales \
+        telnet \
+        procps \
     && sed -i 's/^# en_US.UTF-8 UTF-8$/en_US.UTF-8 UTF-8/g' /etc/locale.gen \
     && locale-gen \
     && update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
@@ -59,7 +64,7 @@ RUN set -ex \
     && pip install pyOpenSSL \
     && pip install ndg-httpsclient \
     && pip install pyasn1 \
-    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
+    && pip install apache-airflow[crypto,celery,postgres,hive,jdbc,mysql,s3,ssh${AIRFLOW_DEPS:+,}${AIRFLOW_DEPS}]==${AIRFLOW_VERSION} \
     && pip install 'celery[redis]>=4.1.1,<4.2.0' \
     && if [ -n "${PYTHON_DEPS}" ]; then pip install ${PYTHON_DEPS}; fi \
     && apt-get purge --auto-remove -yqq $buildDeps \
@@ -75,11 +80,16 @@ RUN set -ex \
 
 COPY script/entrypoint.sh /entrypoint.sh
 COPY config/airflow.cfg ${AIRFLOW_HOME}/airflow.cfg
+COPY dags/* ${AIRFLOW_HOME}/dags/
 
-RUN chown -R airflow: ${AIRFLOW_HOME}
+## adding extra requirements to be installed
+COPY extra/requirements.txt /requirements.txt
+
+##RUN chown -R airflow: ${AIRFLOW_HOME}
 
 EXPOSE 8080 5555 8793
 
+## do all operations as airflow user if possible
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
 ENTRYPOINT ["/entrypoint.sh"]

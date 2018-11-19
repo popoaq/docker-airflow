@@ -1,3 +1,25 @@
+
+fork of puckel/docker-airflow in order to work cleanly with kube-airflow
+
+using celery executor  
+fix https://stackoverflow.com/questions/50444988/celery-attributeerror-async-error
+fix redis and postgres host name to match kube-airflow
+
+add telnet, ps
+## Build
+
+    ./helpers/build_and_push.sh
+
+which does    
+
+    docker build --rm -t popoaq/docker-airflow .
+    docker tag popoaq/docker-airflow popoaq/docker-airflow:first
+    docker push popoaq/docker-airflow:first
+
+# docker hub
+https://hub.docker.com/r/popoaq/docker-airflow/tags/
+
+
 # docker-airflow
 [![CircleCI](https://circleci.com/gh/puckel/docker-airflow/tree/master.svg?style=svg)](https://circleci.com/gh/puckel/docker-airflow/tree/master)
 [![Docker Build Status](https://img.shields.io/docker/build/puckel/docker-airflow.svg)]()

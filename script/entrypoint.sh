@@ -2,11 +2,11 @@
 
 TRY_LOOP="20"
 
-: "${REDIS_HOST:="redis"}"
+: "${REDIS_HOST:="airflow-redis"}"
 : "${REDIS_PORT:="6379"}"
 : "${REDIS_PASSWORD:=""}"
 
-: "${POSTGRES_HOST:="postgres"}"
+: "${POSTGRES_HOST:="airflow-postgresql"}"
 : "${POSTGRES_PORT:="5432"}"
 : "${POSTGRES_USER:="airflow"}"
 : "${POSTGRES_PASSWORD:="airflow"}"
@@ -14,7 +14,7 @@ TRY_LOOP="20"
 
 # Defaults and back-compat
 : "${AIRFLOW__CORE__FERNET_KEY:=${FERNET_KEY:=$(python -c "from cryptography.fernet import Fernet; FERNET_KEY = Fernet.generate_key().decode(); print(FERNET_KEY)")}}"
-: "${AIRFLOW__CORE__EXECUTOR:=${EXECUTOR:-Sequential}Executor}"
+: "${AIRFLOW__CORE__EXECUTOR:="CeleryExecutor"}"
 
 export \
   AIRFLOW__CELERY__BROKER_URL \
