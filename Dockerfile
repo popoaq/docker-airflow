@@ -85,7 +85,7 @@ COPY dags/* ${AIRFLOW_HOME}/dags/
 ## adding extra requirements to be installed
 COPY extra/requirements.txt /requirements.txt
 
-##RUN chown -R airflow: ${AIRFLOW_HOME}
+RUN chown -R airflow: ${AIRFLOW_HOME}
 
 EXPOSE 8080 5555 8793
 
@@ -93,4 +93,5 @@ EXPOSE 8080 5555 8793
 USER airflow
 WORKDIR ${AIRFLOW_HOME}
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["webserver"] # set default arg for entrypoint
+CMD ["webserver"]
+# set default arg for entrypoint
