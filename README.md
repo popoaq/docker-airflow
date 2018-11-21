@@ -1,11 +1,12 @@
 
-fork of puckel/docker-airflow in order to work cleanly with kube-airflow
+fork of puckel/docker-airflow in order to work cleanly with fork of kube-airflow
 
-using celery executor  
-fix https://stackoverflow.com/questions/50444988/celery-attributeerror-async-error
-fix redis and postgres host name to match kube-airflow
+use LocalExecutor
+fix postgres host name to match kube-airflow
 
 add telnet, ps
+
+for demo purposes included dags in the image
 ## Build
 
     ./helpers/build_and_push.sh
